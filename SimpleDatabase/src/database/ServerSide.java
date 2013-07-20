@@ -47,13 +47,18 @@ public class ServerSide {
             while (true) {
 
                 query = in.readUTF();
+                System.out.println("query = " + query);
                 Scanner sc = new Scanner(query);
                 String command = sc.next();
+                System.out.println("command = " + command);
                 String key = sc.next();
+                System.out.println("key = " + key);
 
                 switch (command) {
                     case "create":
-                        byte[] cvalue = sc.next().getBytes();
+                        String value = sc.next();
+                        byte[] cvalue = value.getBytes();
+                        System.out.println("cvalue length" + cvalue.length);
                         shardManager.create(key, cvalue);
                         return;
                     case "read":

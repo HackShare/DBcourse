@@ -41,10 +41,10 @@ public class ClientSide {
             while (true) {
                 line = keyboard.readLine();
                 System.out.println("sending to the server");
+                System.out.println(line);
                 out.writeUTF(line);
                 out.flush();
 
-                line = in.readUTF();
                 System.out.println("Server sent " + line);
 
                 System.out.println();

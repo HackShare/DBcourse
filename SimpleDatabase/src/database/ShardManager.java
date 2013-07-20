@@ -15,8 +15,8 @@ public class ShardManager {
 
     ShardManager() {
         masters = new Shard[SHARD_COUNT];
-        for (Shard shard : masters) {
-            shard = new Shard();
+        for(int i = 0; i < masters.length; i++){
+            masters[i] = new Shard();
         }
     }
 
