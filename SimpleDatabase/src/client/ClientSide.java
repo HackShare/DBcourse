@@ -20,11 +20,16 @@ public class ClientSide {
 
         try {
 
-            InetAddress ipAdress = InetAddress.getByName(address);
-            System.out.println("heard of a socket with IP address" + address + "port" + serverPort + "?");
-            Socket socket = new Socket(ipAdress, serverPort);
+            System.out.println("Welcome to VM-database version 0.1 !");
+            System.out.println("Operations :");
+            System.out.println("create <key> <value>");
+            System.out.println("read <key> ");
+            System.out.println("update <key> <value>");
+            System.out.println("delete <key> ");
+            System.out.println("print");
 
-            System.out.println("hold programm");
+            InetAddress ipAdress = InetAddress.getByName(address);
+            Socket socket = new Socket(ipAdress, serverPort);
 
 
             InputStream socketIn = socket.getInputStream();
@@ -35,19 +40,27 @@ public class ClientSide {
 
             BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
             String line = null;
-            System.out.println("Type text and press enter to send it to the server");
+            System.out.println("Enter command");
             System.out.println();
 
+            boolean checked = true;
+
             while (true) {
+
+
                 line = keyboard.readLine();
-                System.out.println("sending to the server");
+                System.out.println("injecting query");
                 System.out.println(line);
                 out.writeUTF(line);
+
                 out.flush();
-
-                System.out.println("Server sent " + line);
-
                 System.out.println();
+
+                //line = in.readUTF();
+
+                //checked = (line.equals("closing...")) ? false : true;
+
+                System.out.println("reponse : " + line);
             }
 
 

@@ -43,15 +43,18 @@ public class Shard {
         container.remove(key);
     }
 
-    public void print() {
+    public String print() {
 
+        String outline = "";
 
         for (Map.Entry<String, byte[]> entry : container.entrySet()) {
             String key = entry.getKey();
             byte[] value = entry.getValue();
-            System.out.println("key :" + key + "  value :" + value);
+            outline += ("key :" + key + "  value :" + value);
 
         }
+
+        return outline;
 
     }
 

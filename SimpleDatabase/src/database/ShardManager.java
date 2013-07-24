@@ -45,9 +45,14 @@ public class ShardManager {
         masters[position].delete(key);
     }
 
-    public void print(){
+    public StringBuffer print(){
+
+        StringBuffer buffer = new StringBuffer();
+
         for(Shard shard : masters){
-            shard.print();
+           buffer.append(shard.print());
         }
+
+        return buffer;
     }
 }

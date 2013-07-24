@@ -22,20 +22,11 @@ public class ServerSide {
 
         try {
 
-            System.out.println("Welcome to VM v0.1 database !");
-            System.out.println("Operations :");
-            System.out.println("create <key> <value>");
-            System.out.println("read <key> ");
-            System.out.println("update <key> <value>");
-            System.out.println("delete <key> ");
-
             ServerSocket serverSocket = new ServerSocket(port);
-            System.out.println("Waiting for a client");
 
             Socket socket = serverSocket.accept();
 
-            System.out.println("Got a client !");
-            System.out.println();
+            System.out.println("Database");
 
             InputStream socketIn = socket.getInputStream();
             OutputStream socketOut = socket.getOutputStream();
@@ -44,6 +35,8 @@ public class ServerSide {
             DataOutputStream out = new DataOutputStream(socketOut);
 
             String query = null;
+            String response = "bad request";
+            boolean checked = true;
             while (true) {
 
                 query = in.readUTF();
@@ -51,35 +44,49 @@ public class ServerSide {
                 Scanner sc = new Scanner(query);
                 String command = sc.next();
                 System.out.println("command = " + command);
-                String key = sc.next();
-                System.out.println("key = " + key);
+
+
 
                 switch (command) {
                     case "create":
-                        String value = sc.next();
-                        byte[] cvalue = value.getBytes();
-                        System.out.println("cvalue length" + cvalue.length);
-                        shardManager.create(key, cvalue);
+                        String ckey = sc.next();
+                        String cvalue = sc.next();
+                        byte[] bcvalue = cvalue.getBytes();
+                        response = "creating key : " + ckey + " value : " + cvalue;
+                        System.out.println("log :" + response);
+                        shardManager.create(ckey, bcvalue);
                         return;
                     case "read":
-                        shardManager.read(key);
+                        String rkey = sc.next();
+                        byte[] rq = shardManager.read(rkey);
+                        response = rq.toString();
+                        System.out.println("log :" + response);
                         return;
                     case "update":
+                        String ukey = sc.next();
                         byte[] uvalue = sc.next().getBytes();
-                        shardManager.update(key, uvalue);
+                        shardManager.update(ukey, uvalue);
+                        response = "updating " + ukey;
+                        System.out.println("log :" + response);
                         return;
                     case "delete":
-                        shardManager.delete(key);
+                        String dkey = sc.next();
+                        shardManager.delete(dkey);
+                        response = "deleeting " + dkey;
+                        System.out.println("log :" + response);
                         return;
                     case "print":
-                        shardManager.print();
+                        response = shardManager.print().toString();
                         return;
-
-
+                    case "close":
+                        checked = false;
+                        response = "closing...";
+                        System.out.println("log :" + response);
+                        return;
                 }
 
-                String response = "completed";
-                out.writeUTF(response);
+                out.writeUTF(response.toString());
+                out.flush();
 
             }
 
